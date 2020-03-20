@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use  App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Validation\Rule;
 
 class AuthController extends Controller
 {
@@ -18,16 +19,25 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         //validate incoming request 
-        $this->validate($request, [
-            'email' => 'required|email|unique:users',
-            'name' => 'required',
-            'password' => 'required'
-        ]);
-
+        try{
+            $this->validate($request, [
+                'email' => 'required|email|unique:users',
+                'username' => [
+                    'required',
+                    'max:15',
+                    'unique:users',
+                    Rule::notIn(['about', 'me', 'mission', 'patrick', 'contact', 'roadmap', 'faq']),
+                ],
+                'password' => 'required|min:6'
+            ]);
+        }catch( \Illuminate\Validation\ValidationException $e ){
+            return $e->getResponse();
+        }
+        
         try {           
             $user = new User();
             $user->email = $request->email;
-            $user->name = $request->name;
+            $user->username = $request->username;
             $user->password = app('hash')->make($request->password);
             $user->token = str_random(16);
             $user->save();
@@ -37,7 +47,7 @@ class AuthController extends Controller
                     ->subject('Please confirm your account.')
                     ->setBody('
                     <p>Hi!</p>
-                    <p>If you just signed up for a ForHumanSake.org account, please click the link to below to verify your email address. And if you didn’t just sign up... then quite possibly you have made an internet enemy who is now trying to spam you. 🤷‍♀️</p>
+                    <p>If you just signed up for a RemoteFaces.com account, please click the link to below to verify your email address. And if you didn’t just sign up... then quite possibly you have made an internet enemy who is now trying to spam you. 🤷‍♀️</p>
                     <p>'. url('/user/verify/'.$user->id.'/'.$user->token) .'</p>'
                     , 'text/html');
             });

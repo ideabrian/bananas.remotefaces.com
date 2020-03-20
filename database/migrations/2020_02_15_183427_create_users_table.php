@@ -15,19 +15,21 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name');
+            $table->string('name')->nullable();
+            $table->string('username')->unique();
             $table->string('email')->unique();
-            $table->boolean('is_confirmed')->default(0);
+            
+            $table->boolean('is_confirmed')->default(0); //has verified email address
             $table->boolean('newsletter')->default(1);
+
+            $table->string('image_url')->nullable(); //updates every 3 minutes for now
+
             $table->string('password');
             $table->char('token', 16);
 
             $table->string('stripe_id')->nullable();
             $table->string('stripe_last_four')->nullable();
-            $table->string('stripe_brand')->nullable();
-
-            $table->boolean('is_listener')->default(0);
-            $table->boolean('is_available_to_listen')->default(0);
+            $table->string('stripe_brand')->nullable();            
 
             $table->timestamps();
         });

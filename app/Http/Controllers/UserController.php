@@ -33,14 +33,6 @@ class UserController extends Controller
         }
     }
 
-    public function getFirstListener(){
-        if($user = User::where('is_listener', 1)->where('is_available_to_listen',1)->first()){
-            return $user;
-        }else{
-            return response()->json(['message' => 'No listeners available.'], 200);
-        }
-    }
-
     /**
      * Get the authenticated User.
      *
@@ -57,22 +49,6 @@ class UserController extends Controller
         return response()->json(['message' => 'Successfully logged out.'], 200);
     }
 
-    
-    public function updateAvailability(Request $request, $id){
-
-        try{
-            $this->validate($request, [
-                'available' => 'required|boolean'
-            ]);
-        }catch( \Illuminate\Validation\ValidationException $e ){
-            return $e->getResponse();
-        } 
-
-        if(Auth::user()->id == $id && $user = User::find($id)){
-            $user->is_available_to_listen = $request['available'];
-            $user->save();
-        }
-    }
 
     public function pay(Request $request){
 
@@ -143,7 +119,7 @@ class UserController extends Controller
                 }
             }              
 
-            return response()->json(['error' => 'Something went wrong. Please email patrick@forhumansake.org and we’ll get everything squared away.'], 503);
+            return response()->json(['error' => 'Something went wrong. Please email patrick@lorenzut.com and we’ll get everything squared away.'], 503);
 
             
         } catch (\Exception $e) {

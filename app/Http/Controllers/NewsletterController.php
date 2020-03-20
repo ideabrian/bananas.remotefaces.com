@@ -47,7 +47,7 @@ class NewsletterController extends Controller
                 ->subject('Please confirm your email subscription.')
                 ->setBody('
                 <p>Hi!</p>
-                <p>If you just signed up to receive email updates about ForHumanSake.org, please click the link to below to verify your email address. And if you didn’t just sign up... then quite possibly you have made an internet enemy who is now trying to spam you. 🤷‍♀️</p>
+                <p>If you just signed up to receive email updates about RemoteFaces.com, please click the link to below to verify your email address. And if you didn’t just sign up... then quite possibly you have made an internet enemy who is now trying to spam you. 🤷‍♀️</p>
                 <p>'. url('/newsletter/verify/'.$subscription->id.'/'.$subscription->token) .'</p>'
                 , 'text/html');
         });
