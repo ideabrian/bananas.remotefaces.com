@@ -1,0 +1,247 @@
+* {
+    margin: 0px;
+    padding: 0;
+    -webkit-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -o-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+  
+  .clearfix {
+    clear: both;
+    float: none !important;
+  }
+  
+  img {
+    max-width: 100%;
+    border: none;
+  }
+  
+  html {
+    font-size: 15px;
+    height: 100%;
+    min-width: 300px;
+    width: 100%;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -moz-font-feature-settings: "liga" on;
+    text-rendering: optimizeLegibility;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+  
+  @media screen and (min-width: 370px) {
+    html {
+      font-size: 16px;
+    }
+  }
+  
+  #underpolishedchat-wrapper {
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    position: absolute;
+    overflow-y: scroll;
+    display: block !important;
+  }
+  
+  #underpolishedchat-full {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: #eee;
+    z-index: 2;
+    height: 100%;
+    min-height: 500px;
+  }
+  
+  @media screen and (width: 370px) {
+    #underpolishedchat-chat {
+      border-bottom-left-radius: 8px;
+      border-bottom-right-radius: 8px;
+    }
+
+    #underpolishedchat-wrapper {
+      overflow-y: none;
+    }
+    
+    #underpolishedchat-full {
+      bottom: 0;
+      height: auto;
+      min-height: 0;
+    }
+  }
+  
+  
+  #underpolishedchat-header {
+    border-bottom: 1px solid #eaeced;
+    -webkit-box-shadow: 0 1px 0.8rem rgba(0, 0, 0, 0.05);
+            box-shadow: 0 1px 0.8rem rgba(0, 0, 0, 0.05);
+    position: relative;
+    /*background-image: url(/img/chat-bg.png);
+    background-size: cover;*/
+    color: white;
+    height: 15em;
+    padding: 1em;
+  }
+  
+  #underpolishedchat-header .close {
+    position: absolute;
+    cursor: pointer;
+    -webkit-opacity: 0.45;
+    -ms-opacity: 0.45;
+    -moz-opacity: 0.45;
+    -o-opacity: 0.45;
+    opacity: 0.45;
+    right: 1em;
+    top: 1.425em;
+    width: 2em;
+    text-align: center;
+  }
+  
+  #underpolishedchat-header .close img {
+    width: 1em;
+    height: 1em;
+  }
+  
+  #underpolishedchat-header .close:hover {
+    -webkit-opacity: 1;
+    -ms-opacity: 1;
+    -moz-opacity: 1;
+    -o-opacity: 1;
+    opacity: 1;
+  }
+  
+  #underpolishedchat-header strong {
+    vertical-align: middle;
+    font-weight: 500;
+    margin-left: .75em;
+    margin-top: .3em;
+    display: inline-block;
+  }
+  
+  
+  #underpolishedchat-get-email {
+    position: absolute;
+    bottom: 1em;
+    left: 1em;
+    right: 1em;
+    z-index: 3;
+  }
+
+  
+  #underpolishedchat-full textarea,
+  #underpolishedchat-full input {
+    width: 100%;
+    border: none;
+    font-size: 16px;
+    resize: none;
+    line-height: 1.4;
+    padding: .75rem 1.25rem;
+    background: white;
+    outline: none;  
+    border-radius: 4px;  
+  }
+  #underpolishedchat-full textarea{
+    height: 100%;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+  
+  #underpolishedchat-full textarea:focus,
+  #underpolishedchat-full input:focus {
+    border-color: #3b3868;
+  }
+  
+  #email-submit-button {
+    margin-top: 2em;
+    padding: 1em 2em;
+    border-radius: 4px;
+    text-align: center;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+    display: block;
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+  
+  #underpolishedchat-chat {
+    position: absolute;
+    bottom: 13em;
+    left: 1em;
+    right: 1em;
+    top: 4em;
+  }
+  
+  #underpolishedchat-button {
+    position: absolute;
+    overflow: hidden;
+    cursor: pointer;
+    font-size: 14px;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+    color: white;
+    font-weight: 600;
+    padding: 1em 2em;
+    display: block;
+    line-height: 1;
+    border-radius: 20px;
+    right: 0;
+    bottom: 0;
+  }
+  #underpolishedchat-button.sent{
+    border-radius: 0;
+    line-height: 1.4em;
+  }
+  #underpolishedchat-button:hover{
+    background: #333!important;
+  }
+
+
+  .underpolishedchat-bg-color{
+    background-color: #333333;
+  }
+
+  #underpolishedchat-email-disclaimer{
+    opacity: .3;
+    font-size: .9em;
+    margin: .5rem;
+  }
+
+  #underpolishedchat-branding{
+    opacity: .3;
+    font-size: .9em;
+    margin: .5rem 0 0;
+    text-align: center;
+  }
+  #underpolishedchat-branding a{
+    color: inherit;
+  }
+
+
+  #underpolishedchat-full.whitelabeled #underpolishedchat-chat {
+    bottom: 12em!important;
+  }
+  #underpolishedchat-full.whitelabeled #underpolishedchat-branding{
+    display: none;
+  }
+
+  #text-close{
+    display: none;
+  }
+  #text-success{
+    display: none;
+  }

@@ -1,0 +1,98 @@
+.underpolishedchat-frame-wrapper {
+    position: fixed;
+    z-index: 99999;
+  }
+  
+  .underpolishedchat-frame-wrapper iframe {
+    border: none;
+    width: 100%;
+    height: 100%;
+  }
+  
+  #underpolishedchat-button-frame-wrapper {
+    right: 30px;
+    bottom: 30px;
+    width: 200px;
+    height: 80px;
+  }
+  
+  #underpolishedchat-button-frame-wrapper iframe {
+    overflow: hidden;
+  }
+  
+  #underpolishedchat-teaser-frame-wrapper {
+    display: none;
+    visibility: hidden;
+    bottom: 100px;
+    right: 0;
+    -webkit-box-shadow: 0 -3px 24px 0 rgba(0, 0, 0, 0.23), 0 12px 43px 0 rgba(0, 0, 0, 0.25);
+            box-shadow: 0 -3px 24px 0 rgba(0, 0, 0, 0.23), 0 12px 43px 0 rgba(0, 0, 0, 0.25);
+    -webkit-box-shadow: 0 5px 40px rgba(0, 0, 0, 0.16);
+            box-shadow: 0 5px 40px rgba(0, 0, 0, 0.16);
+    width: 300px;
+    min-width: 300px;
+    border-radius: 20px;
+    -moz-border-bottom-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    left: 0;
+  }
+  
+  @media screen and (min-width: 340px) {
+    #underpolishedchat-teaser-frame-wrapper {
+      left: auto;
+      right: 20px;
+    }
+  }
+  
+  @media screen and (min-width: 500px) {
+    #underpolishedchat-teaser-frame-wrapper {
+      right: 40px;
+    }
+  }
+  
+  #underpolishedchat-chat-frame-wrapper {
+    display: none;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    min-width: 300px;
+    width: 100%;
+    -webkit-box-shadow: 0 -3px 24px 0 rgba(0, 0, 0, 0.03), 0 12px 43px 0 rgba(0, 0, 0, 0.15);
+            box-shadow: 0 -3px 24px 0 rgba(0, 0, 0, 0.03), 0 12px 43px 0 rgba(0, 0, 0, 0.15);
+  }
+  
+  @media screen and (min-width: 300px) {
+    #underpolishedchat-chat-frame-wrapper {
+      left: auto;
+    }
+  }
+  
+  @media screen and (min-width: 500px) {
+    #underpolishedchat-chat-frame-wrapper {
+      max-width: 360px;
+    }
+  }
+  
+  @media screen and (min-width: 768px) and (min-height: 700px) {
+    #underpolishedchat-chat-frame-wrapper {
+      top: 100px;
+      right: 30px;
+      bottom: 100px;
+      border-radius: 8px;
+      border-left: 0;
+      max-width: 370px;
+    }
+  
+    #underpolishedchat-chat-frame-wrapper iframe {
+      border-radius: 8px;
+    }
+  }
+  
+  @media screen and (min-width: 1024px) and (min-height: 700px) {
+    #underpolishedchat-chat-frame-wrapper {
+      max-width: 380px;
+    }
+  }
+  
+  
