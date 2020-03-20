@@ -30,4 +30,5 @@ $router->get('/newsletter/verify/{id}/{token}', 'NewsletterController@verifySubs
 $router->group(['middleware' => 'auth'], function () use ($router) {
     $router->get('/me', 'UserController@profile');
     $router->post('/logout', 'UserController@logout');
+    $router->post('/updateImage', 'UserController@updateImageUrl');    
 });

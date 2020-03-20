@@ -9,10 +9,11 @@
         "guzzlehttp/guzzle": "^6.5",
         "illuminate/mail": "^5.8",
         "laravel/lumen-framework": "5.8.*",
+        "league/flysystem": "^1.0",
         "palanik/lumen-cors": "dev-master",
         "php-http/curl-client": "^2.1",
-        "tymon/jwt-auth": "dev-develop",
-        "stripe/stripe-php": "^7.0@dev"
+        "stripe/stripe-php": "^7.0@dev",
+        "tymon/jwt-auth": "dev-develop"
     },
     "require-dev": {
         "fzaninotto/faker": "^1.4",

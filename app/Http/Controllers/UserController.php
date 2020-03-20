@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use  App\User;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -31,6 +32,22 @@ class UserController extends Controller
         }else{
             echo 'Error.';
         }
+    }
+
+    public function updateImageUrl(Request $request){        
+
+        $user = Auth::user();
+        $filename = $user->id.'-'.Date('YmdHis').'.gif';
+
+        $base64_image = $request->input('photo');
+        @list($type, $file_data) = explode(';', $base64_image);
+        @list(, $file_data) = explode(',', $file_data); 
+        Storage::disk('local')->put($filename, base64_decode($file_data));
+        
+        $user->image_url = $filename;
+        $user->save();
+
+        return response()->json(['image_url' => $filename], 200);
     }
 
     /**
