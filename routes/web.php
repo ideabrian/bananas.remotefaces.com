@@ -21,6 +21,7 @@ $router->get('/', function () use ($router) {
 $router->post('/register', 'AuthController@register');
 $router->post('/login', 'AuthController@login');
 $router->get('/user/verify/{id}/{token}', 'UserController@verifyUser'); 
+$router->get('/getWorkers', 'UserController@getWorkers'); 
 $router->post('/newsletter/subscribe', 'NewsletterController@createSubscription'); 
 $router->get('/newsletter/verify/{id}/{token}', 'NewsletterController@verifySubscription'); 
 

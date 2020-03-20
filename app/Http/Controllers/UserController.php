@@ -8,6 +8,10 @@ use  App\User;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
+use Aws\S3\S3Client;
+use League\Flysystem\AwsS3v3\AwsS3Adapter;
+use League\Flysystem\Filesystem;
+
 class UserController extends Controller
 {
      /**
@@ -18,6 +22,11 @@ class UserController extends Controller
     public function __construct()
     {
         
+    }
+
+    public function getWorkers(){
+        $users = User::whereNotNull('image_url')->orderBy('updated_at','desc')->get();
+        return $users;
     }
 
     public function verifyUser($id, $token){
@@ -36,18 +45,32 @@ class UserController extends Controller
 
     public function updateImageUrl(Request $request){        
 
+        $client = new S3Client([
+            'credentials' => [
+                'key'    => env('AWS_ACCESS_KEY_ID'),
+                'secret' => env('AWS_SECRET_ACCESS_KEY')
+            ],
+            'region' => env('AWS_DEFAULT_REGION'),
+            'version' => 'latest',
+        ]);
+        
+        $adapter = new AwsS3Adapter($client, env('AWS_BUCKET'));
+        $filesystem = new Filesystem($adapter);
+
         $user = Auth::user();
-        $filename = $user->id.'-'.Date('YmdHis').'.gif';
+        $filename = $user->id.'-'.Date('YmdHis').'.jpg';
 
         $base64_image = $request->input('photo');
         @list($type, $file_data) = explode(';', $base64_image);
         @list(, $file_data) = explode(',', $file_data); 
-        Storage::disk('local')->put($filename, base64_decode($file_data));
+        Storage::disk('s3')->put($filename, base64_decode($file_data),'public');
         
         $user->image_url = $filename;
         $user->save();
 
-        return response()->json(['image_url' => $filename], 200);
+        $users = User::whereNotNull('image_url')->orderBy('updated_at','desc')->get();
+        return $users;
+
     }
 
     /**
