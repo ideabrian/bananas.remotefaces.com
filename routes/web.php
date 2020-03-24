@@ -26,10 +26,20 @@ $router->post('/newsletter/subscribe', 'NewsletterController@createSubscription'
 $router->get('/newsletter/verify/{id}/{token}', 'NewsletterController@verifySubscription'); 
 
 //$router->post('/pay', 'UserController@pay');
+$router->get('/rooms/{slug}', 'RoomController@find');
 
 //protected routes
 $router->group(['middleware' => 'auth'], function () use ($router) {
     $router->get('/me', 'UserController@profile');
     $router->post('/logout', 'UserController@logout');
-    $router->post('/updateImage', 'UserController@updateImageUrl');    
+    $router->post('/updateImage', 'UserController@updateImageUrl');
+
+    $router->post('/rooms', 'RoomController@create');
+    $router->post('/rooms/join', 'RoomController@join');
+    $router->get('/rooms', 'RoomController@get');
+
+    $router->post('/sessions/start', 'SessionController@start');
+    $router->post('/sessions/update', 'SessionController@update');
+    $router->post('/sessions/end', 'SessionController@end');
+
 });

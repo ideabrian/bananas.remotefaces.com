@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use  App\User;
+use  App\File;
+use  App\Session;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
@@ -42,6 +44,7 @@ class UserController extends Controller
             echo 'Error.';
         }
     }
+    
 
     public function updateImageUrl(Request $request){        
 
@@ -65,6 +68,11 @@ class UserController extends Controller
         @list(, $file_data) = explode(',', $file_data); 
         Storage::disk('s3')->put($filename, base64_decode($file_data),'public');
         
+        $file = new File();
+        $file->amazon_url = 'https://remotefaces.s3.amazonaws.com/'.$filename;
+        $file->type = 'image';
+        $file->save();        
+
         $user->image_url = $filename;
         $user->save();
 

@@ -22,12 +22,7 @@ class AuthController extends Controller
         try{
             $this->validate($request, [
                 'email' => 'required|email|unique:users',
-                'username' => [
-                    'required',
-                    'max:15',
-                    'unique:users',
-                    Rule::notIn(['about', 'me', 'mission', 'patrick', 'contact', 'roadmap', 'faq']),
-                ],
+                'username' => 'required|alpha_dash|max:15|unique:users',
                 'password' => 'required|min:6'
             ]);
         }catch( \Illuminate\Validation\ValidationException $e ){
@@ -37,7 +32,7 @@ class AuthController extends Controller
         try {           
             $user = new User();
             $user->email = $request->email;
-            $user->username = $request->username;
+            $user->username = strtolower($request->username);
             $user->password = app('hash')->make($request->password);
             $user->token = str_random(16);
             $user->save();

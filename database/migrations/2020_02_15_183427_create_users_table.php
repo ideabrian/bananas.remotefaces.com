@@ -15,12 +15,15 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name')->nullable();
-            $table->string('username')->unique();
+            $table->string('name', 50)->nullable();
+            $table->string('username', 15)->unique();
             $table->string('email')->unique();
             
             $table->boolean('is_confirmed')->default(0); //has verified email address
             $table->boolean('newsletter')->default(1);
+            $table->boolean('do_not_disturb')->default(0);
+
+            $table->string('status');
 
             $table->string('image_url')->nullable(); //updates every 3 minutes for now
 

@@ -53,4 +53,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     {
         return [];
     }
+
+
+    public function rooms()
+    {
+        return $this->belongsToMany('App\Room');
+    }
 }
