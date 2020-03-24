@@ -24,7 +24,7 @@ class CreateUsersTable extends Migration
             
             $table->boolean('do_not_disturb')->default(0);
 
-            $table->string('status');
+            $table->string('status')->nullable();
 
             $table->unsignedBigInteger('file_id')->nullable();
             $table->unsignedBigInteger('room_id')->nullable();
