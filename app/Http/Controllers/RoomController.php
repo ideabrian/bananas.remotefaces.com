@@ -9,6 +9,7 @@ use  App\RoomUser;
 use  App\File;
 use  App\Session;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class RoomController extends Controller
 {
@@ -101,7 +102,7 @@ class RoomController extends Controller
         $room->privacy = $request->privacy;
         $room->token = str_random(24);
 
-        $room->text = 'Use this section to describe your room and/or to provide quick links to other tools you use, e.g. your team’s Slack, Zoom, etc.';
+        $room->notes = 'Use this section to describe your room and/or to provide quick links to other tools you use, e.g. your team’s Slack, Zoom, etc.';
 
         $room->save();
 
