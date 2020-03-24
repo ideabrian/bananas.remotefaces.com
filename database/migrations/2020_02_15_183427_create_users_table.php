@@ -21,11 +21,13 @@ class CreateUsersTable extends Migration
             
             $table->boolean('is_confirmed')->default(0); //has verified email address
             $table->boolean('newsletter')->default(1);
+            
             $table->boolean('do_not_disturb')->default(0);
 
             $table->string('status');
 
-            $table->string('image_url')->nullable(); //updates every 3 minutes for now
+            $table->unsignedBigInteger('file_id')->nullable();
+            $table->unsignedBigInteger('room_id')->nullable();
 
             $table->string('password');
             $table->char('token', 16);
@@ -35,6 +37,9 @@ class CreateUsersTable extends Migration
             $table->string('stripe_brand')->nullable();            
 
             $table->timestamps();
+
+            $table->index('file_id');
+            $table->index('room_id');
         });
     }
 

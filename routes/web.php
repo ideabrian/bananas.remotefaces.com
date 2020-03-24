@@ -21,7 +21,7 @@ $router->get('/', function () use ($router) {
 $router->post('/register', 'AuthController@register');
 $router->post('/login', 'AuthController@login');
 $router->get('/user/verify/{id}/{token}', 'UserController@verifyUser'); 
-$router->get('/getWorkers', 'UserController@getWorkers'); 
+$router->get('/getWorkers/1', 'UserController@getWorkers');
 $router->post('/newsletter/subscribe', 'NewsletterController@createSubscription'); 
 $router->get('/newsletter/verify/{id}/{token}', 'NewsletterController@verifySubscription'); 
 
@@ -41,5 +41,7 @@ $router->group(['middleware' => 'auth'], function () use ($router) {
     $router->post('/sessions/start', 'SessionController@start');
     $router->post('/sessions/update', 'SessionController@update');
     $router->post('/sessions/end', 'SessionController@end');
+
+    $router->get('/getWorkers/{room_id}', 'UserController@getWorkers');
 
 });

@@ -37,6 +37,8 @@ class AuthController extends Controller
             $user->token = str_random(16);
             $user->save();
 
+
+
             Mail::send([], [], function ($message) use($user) {
                 $message->to($user->email)
                     ->subject('Please confirm your account.')
@@ -46,9 +48,13 @@ class AuthController extends Controller
                     <p>'. url('/user/verify/'.$user->id.'/'.$user->token) .'</p>'
                     , 'text/html');
             });
-            return response()->json([
-                'success' => 'Email Sent!'
-            ], 200);
+
+            //Add all new users to Playground room.
+            $room_user = new RoomUser();
+            $room_user->room_id = 1;
+            $room_user->user_id = $user->id;
+            $room_user->role = 'member';
+            $room_user->save();
 
             //return successful response
             return response()->json(['user' => $user, 'message' => 'CREATED'], 201);

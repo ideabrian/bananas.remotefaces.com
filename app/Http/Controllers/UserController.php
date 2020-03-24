@@ -14,6 +14,8 @@ use Aws\S3\S3Client;
 use League\Flysystem\AwsS3v3\AwsS3Adapter;
 use League\Flysystem\Filesystem;
 
+use Illuminate\Database\Eloquent\Builder;
+
 class UserController extends Controller
 {
      /**
@@ -26,8 +28,13 @@ class UserController extends Controller
         
     }
 
-    public function getWorkers(){
-        $users = User::whereNotNull('image_url')->orderBy('updated_at','desc')->get();
+    public function getWorkers($room_id = 1){
+
+        //TODO only return something here if this group is public or if Auth::user() belongs to this group.
+
+        $users = User::whereHas('rooms', function (Builder $query) use($room_id) {
+            $query->where('room_id', $room_id);
+        })->with('file')->whereNotNull('file_id')->orderBy('updated_at','desc')->get();
         return $users;
     }
 
@@ -47,6 +54,15 @@ class UserController extends Controller
     
 
     public function updateImageUrl(Request $request){        
+
+        try{
+            $this->validate($request, [
+                'room_id' => 'required|exists:rooms,id',
+            ]);
+        }catch( \Illuminate\Validation\ValidationException $e ){
+            return $e->getResponse();
+        }         
+
 
         $client = new S3Client([
             'credentials' => [
@@ -73,11 +89,11 @@ class UserController extends Controller
         $file->type = 'image';
         $file->save();        
 
-        $user->image_url = $filename;
+        $user->file_id = $file->id;
+        $user->room_id = $request->room_id;
         $user->save();
 
-        $users = User::whereNotNull('image_url')->orderBy('updated_at','desc')->get();
-        return $users;
+        return $this->getWorkers($request->room_id);
 
     }
 

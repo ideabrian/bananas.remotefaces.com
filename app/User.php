@@ -59,4 +59,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     {
         return $this->belongsToMany('App\Room');
     }
+
+    public function file(){
+        return $this->hasOne('App\File', 'id', 'file_id');
+    }
 }
