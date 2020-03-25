@@ -50,6 +50,13 @@ class AuthController extends Controller
                     , 'text/html');
             });
 
+            //Add all new users to Playground room.
+            $room_user = new RoomUser();
+            $room_user->room_id = 1;
+            $room_user->user_id = $user->id;
+            $room_user->role = 'member';
+            $room_user->save();
+
             //return successful response
             return response()->json(['user' => $user, 'message' => 'CREATED'], 201);
 

@@ -87,7 +87,7 @@ class RoomController extends Controller
                     'alpha_dash',
                     'max:15',
                     'unique:rooms',
-                    Rule::notIn(['about', 'me', 'mission', 'patrick', 'contact', 'roadmap', 'faq', 'room', 'dance', 'mingle', 'cowork', 'work', 'codance', 'comingle']),
+                    Rule::notIn(['about', 'me', 'mission', 'patrick', 'contact', 'roadmap', 'faq', 'room', 'dance', 'talk','mingle', 'cowork', 'work', 'codance', 'comingle']),
                 ],
                 'privacy' => 'required'
             ]);
