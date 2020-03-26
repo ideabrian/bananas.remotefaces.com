@@ -15,9 +15,11 @@ class CreateFilesTable extends Migration
     {
         Schema::create('files', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->unsignedBigInteger('user_id');
             $table->string('amazon_url');
-            $table->enum('type', ['video', 'image']);
+            $table->string('type', 10);
             $table->timestamps();
+            $table->index('user_id');
         });
     }
 

@@ -63,4 +63,5 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function file(){
         return $this->hasOne('App\File', 'id', 'file_id');
     }
+    
 }

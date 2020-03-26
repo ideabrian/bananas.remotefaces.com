@@ -27,7 +27,6 @@ class CreateUsersTable extends Migration
             $table->string('status')->nullable();
 
             $table->unsignedBigInteger('file_id')->nullable();
-            $table->unsignedBigInteger('room_id')->nullable();
 
             $table->string('password');
             $table->char('token', 16);
@@ -39,7 +38,6 @@ class CreateUsersTable extends Migration
             $table->timestamps();
 
             $table->index('file_id');
-            $table->index('room_id');
         });
     }
 

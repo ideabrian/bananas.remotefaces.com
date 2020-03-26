@@ -58,6 +58,7 @@ class UserController extends Controller
         try{
             $this->validate($request, [
                 'room_id' => 'required|exists:rooms,id',
+                'still' => 'required'
             ]);
         }catch( \Illuminate\Validation\ValidationException $e ){
             return $e->getResponse();
@@ -77,21 +78,40 @@ class UserController extends Controller
         $filesystem = new Filesystem($adapter);
 
         $user = Auth::user();
-        $filename = $user->id.'-'.Date('YmdHis').'.jpg';
 
-        $base64_image = $request->input('photo');
+        //still image
+        $filename = $user->id.'-'.Date('YmdHis').'.jpg';
+        $base64_image = $request->input('still');
         @list($type, $file_data) = explode(';', $base64_image);
         @list(, $file_data) = explode(',', $file_data); 
         Storage::disk('s3')->put($filename, base64_decode($file_data),'public');
         
         $file = new File();
+        $file->user_id = $user->id;
         $file->amazon_url = 'https://remotefaces.s3.amazonaws.com/'.$filename;
         $file->type = 'image';
-        $file->save();        
+        $file->save();
 
         $user->file_id = $file->id;
-        $user->room_id = $request->room_id;
-        $user->save();
+
+        //gif
+        if($request->has('gif') && $request->gif != NULL){
+            $filename = $user->id.'-'.Date('YmdHis').'.gif';
+            $base64_image = $request->input('gif');
+            @list($type, $file_data) = explode(';', $base64_image);
+            @list(, $file_data) = explode(',', $file_data); 
+            Storage::disk('s3')->put($filename, base64_decode($file_data),'public');
+            
+            $file = new File();
+            $file->user_id = $user->id;
+            $file->amazon_url = 'https://remotefaces.s3.amazonaws.com/'.$filename;
+            $file->type = 'gif';
+            $file->save();
+
+            $user->file_id = $file->id; 
+        }
+
+        $user->save(); //only sets last_updated time
 
         return $this->getWorkers($request->room_id);
 
