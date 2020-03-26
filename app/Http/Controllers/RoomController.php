@@ -28,7 +28,7 @@ class RoomController extends Controller
         try{
             $this->validate($request, [
                 'slug' => 'required|alpha_dash|max:15',
-                'token' => 'required|max:25|min:25'
+                'token' => 'required|min:25'
             ]);
         }
         catch( \Illuminate\Validation\ValidationException $e ){
@@ -36,7 +36,8 @@ class RoomController extends Controller
         } 
 
 
-        $inviting_user_id = substr($request->token, -1);
+        $token_length = strlen($request->token);
+        $inviting_user_id = substr($request->token, 24, ($token_length - 24));
         $token = substr($request->token, 0, 24);
 
         if($room = Room::where('slug',$request->slug)->where('token',$token)->first()){
