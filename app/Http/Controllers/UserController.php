@@ -15,9 +15,11 @@ use League\Flysystem\AwsS3v3\AwsS3Adapter;
 use League\Flysystem\Filesystem;
 
 use Illuminate\Database\Eloquent\Builder;
+use App\Helper;
 
 class UserController extends Controller
 {
+
      /**
      * Instantiate a new UserController instance.
      *
@@ -37,21 +39,86 @@ class UserController extends Controller
         })->with('file')->whereNotNull('file_id')->orderBy('updated_at','desc')->get();
         return $users;
     }
+    
+    public function sendLoginLink(Request $request){
+        try{
+            $this->validate($request, [
+                'email' => 'required|exists:users,email',
+                'room_id' => 'required|exists:rooms,id',
+            ]);
+        }
+        catch( \Illuminate\Validation\ValidationException $e ){
+            return $e->getResponse();
+        }
 
-    public function verifyUser($id, $token){
-        if($user = User::where('id', $id)->where('token',$token)->where('is_confirmed',0)->first()){
-            $user->is_confirmed = true;
-            $user->save();
+        if($user = User::where('email', $request->email)->first()){
+            Helper::sendLoginLink($user->id, $request->room_id);
+            return response()->json(['success' => true], 200);
+        }
 
-            //TODO send welcome email.
+        return response()->json(['error' => true, 'message' => 'Email not found.'], 404);
 
-            echo 'User confirmed. Muchas gracias! <a href="'.env('FRONTEND_URL').'">Return to site.</a>';
+        
+    }
+
+    public function setEmail(Request $request){
+        try{
+            $this->validate($request, [
+                'email' => 'required|email',
+            ]);
+        }
+        catch( \Illuminate\Validation\ValidationException $e ){
+            return $e->getResponse();
+        } 
+
+        if($user = User::where('email',$request->email)->first()){                                                
+            //do this check, because if the user doesn't yet have a username then we can't skip this step on the frontend
+            if($user->username){
+                return response()->json(['success' => true, 'user' => $user], 200);
+            }
+        }else{
+            $user = new User();
+            $user->email = $request->email;
+            $user->save();            
+        }
+
+        return response()->json(['success' => true, 'user_id' => $user->id], 200);
+        
+
+    }
+
+    public function setUsername(Request $request){        
+
+        try{
+            $this->validate($request, [
+                'user_id' => 'required|exists:users,id',
+                'username' => 'required|alpha_dash|max:15|unique:users',
+                'room_id' => 'required|sometimes'
+            ]);
+        }catch( \Illuminate\Validation\ValidationException $e ){
+            return $e->getResponse();
+        }  
+
+        if($user = User::find($request->user_id)){
+            if($user->username){
+                //the user already has a username, so we can't override it.
+                return response()->json(['error' => true, 'message' => 'Not allowed.'], 501);
+            }else{
+                $user->username = $request->username;
+                $user->save();
+
+                if($request->has('room_id')){
+                    Helper::sendLoginLink($request->user_id, $request->room_id);
+                }
+
+                return response()->json(['success' => true], 200);    
+            }
 
         }else{
-            echo 'Error.';
+            return response()->json(['error' => true, 'message' => 'User not found.'], 404);
         }
+
     }
-    
 
     public function updateImageUrl(Request $request){        
 
@@ -117,15 +184,27 @@ class UserController extends Controller
 
     }
 
-    /**
-     * Get the authenticated User.
-     *
-     * @return Response
-     */
+    
     public function profile()
     {
         return response()->json(Auth::user(), 200);
-    }    
+    }   
+    
+    //get profile along with 
+    public function profileFromRoom(Request $request)
+    {
+        if($room_id = Helper::getRoomIDFromRequest()){
+            $user = Auth::user()->load(['deets' => function ($query) use($room_id){
+                $query->where('room_id', $room_id);
+            }]);
+            return response()->json($user, 200);
+        }else{
+            return response()->json(['message' => 'Room not found.'], 404);
+        }
+
+
+        
+    } 
 
     public function logout()
     {

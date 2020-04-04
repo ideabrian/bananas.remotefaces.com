@@ -17,6 +17,10 @@ class CreateRoomsTable extends Migration
             $table->bigIncrements('id');
             $table->string('name', 50);
             $table->string('slug', 15)->unique();
+            $table->string('domain')->nullable();
+            $table->string('title');
+            $table->text('subtitle');
+            $table->text('pitch');
             $table->text('notes');
             $table->char('token', 24);
             $table->enum('privacy', ['visible', 'hidden', 'locked']);

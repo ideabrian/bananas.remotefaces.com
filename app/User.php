@@ -21,7 +21,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'username', 'newsletter'
+        'name', 'email', 'username'
     ];
 
     /**
@@ -30,7 +30,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $hidden = [
-        'password', 'token', 'is_confirmed', 'newsletter', 'stripe_id', 'stripe_last_four', 'stripe_brand'
+        'password', 'token', 'newsletter', 'stripe_id', 'stripe_last_four', 'stripe_brand'
     ];
   
 
@@ -62,6 +62,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     public function file(){
         return $this->hasOne('App\File', 'id', 'file_id');
+    }
+    
+    public function deets(){
+        return $this->hasMany('App\RoomUser', 'user_id', 'id');
     }
     
 }
