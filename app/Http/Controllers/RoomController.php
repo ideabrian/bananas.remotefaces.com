@@ -33,12 +33,17 @@ class RoomController extends Controller
         try{
             $this->validate($request, [
                 'email' => 'required|email',
-                'room_id' => 'required|exists:rooms,id'
+                'room_id' => 'required|exists:rooms,id',
+                'name' => 'required|integer'
             ]);
         }
         catch( \Illuminate\Validation\ValidationException $e ){
             return $e->getResponse();
         } 
+
+        if($request->name != 742){
+            return response()->json(['message' => 'Not today, junior.'], 403);
+        }
 
         if($user = User::where('email',$request->email)->first()){                                                
             //do this check, because if the user doesn't yet have a username then we can't skip this step on the frontend
@@ -101,6 +106,7 @@ class RoomController extends Controller
         try{
             $this->validate($request, [
                 'name' => 'required|max:50',
+                'firstName' => 'required|integer',
                 'slug' => [
                     'required',
                     'alpha_dash',
@@ -115,13 +121,17 @@ class RoomController extends Controller
             return $e->getResponse();
         } 
 
+        if($request->firstName != 742){
+            return response()->json(['message' => 'Not today, junior.'], 403);
+        }
+
         $room = new Room;
         $room->name = $request->name;
         $room->slug = strtolower($request->slug);
         $room->privacy = 'visible';
         $room->token = str_random(24);
 
-        $room->title = $request->name;
+        $room->title = 'Cowork with '.$request->name;
         $room->pitch = '';
         $room->subtitle = '';
         $room->notes = 'Use this section to describe your room and/or to provide quick links to other tools you use, e.g. your team’s Slack, Zoom, etc.';

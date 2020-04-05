@@ -45,13 +45,18 @@ class UserController extends Controller
             $this->validate($request, [
                 'email' => 'required|exists:users,email',
                 'room_id' => 'required|exists:rooms,id',
+                'name' => 'required|integer'
             ]);
         }
         catch( \Illuminate\Validation\ValidationException $e ){
             return $e->getResponse();
         }
 
-        if($user = User::where('email', $request->email)->first()){
+        if($request->name != 742){
+            return response()->json(['message' => 'Not today, junior.'], 403);
+        }
+
+        if($user = User::where('email', $request->email)->where('room_id',$request->room_id)->first()){
             Helper::sendLoginLink($user->id, $request->room_id);
             return response()->json(['success' => true], 200);
         }
@@ -65,11 +70,16 @@ class UserController extends Controller
         try{
             $this->validate($request, [
                 'email' => 'required|email',
+                'name' => 'required|integer'
             ]);
         }
         catch( \Illuminate\Validation\ValidationException $e ){
             return $e->getResponse();
         } 
+
+        if($request->name != 742){
+            return response()->json(['message' => 'Not today, junior.'], 403);
+        }
 
         if($user = User::where('email',$request->email)->first()){                                                
             //do this check, because if the user doesn't yet have a username then we can't skip this step on the frontend
@@ -92,12 +102,23 @@ class UserController extends Controller
         try{
             $this->validate($request, [
                 'user_id' => 'required|exists:users,id',
-                'username' => 'required|alpha_dash|max:15|unique:users',
-                'room_id' => 'required|sometimes'
+                'username' => [
+                    'required',
+                    'alpha_dash',
+                    'max:15',
+                    'unique:users',
+                    Rule::notIn(['terms','privacy','help','contact', 'new', 'join', 'login']),
+                ],
+                'room_id' => 'required|sometimes',
+                'name' => 'required|integer'
             ]);
         }catch( \Illuminate\Validation\ValidationException $e ){
             return $e->getResponse();
         }  
+
+        if($request->name != 742){
+            return response()->json(['message' => 'Not today, junior.'], 403);
+        }
 
         if($user = User::find($request->user_id)){
             if($user->username){

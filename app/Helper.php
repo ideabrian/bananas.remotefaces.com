@@ -11,9 +11,11 @@ class Helper
     public static function getRoomIDFromRequest(){
         $domain = parse_url($_SERVER['HTTP_REFERER'], PHP_URL_HOST);
 
-        if (strpos($domain, '.remotefaces.com') !== false || strpos($domain, '.face.com') !== false) {
-            $subdomain = explode(".",$domain);
-            
+        if (strpos($domain, 'localhost') !== false) {
+            $room = Room::where('slug','localhost')->first();
+        }
+        else if (strpos($domain, '.remotefaces.com') !== false || strpos($domain, '.face.com') !== false) {
+            $subdomain = explode(".",$domain);            
             $room = Room::where('slug',$subdomain)->first();
 
         }else{
