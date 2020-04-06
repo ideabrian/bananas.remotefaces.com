@@ -94,7 +94,7 @@ class RoomController extends Controller
     }
 
     public function find($slug){
-        if($room = Room::with('users')->where('slug',$slug)->first()){
+        if($room = Room::with('users')->where('slug',$slug)->orWhere('domain',$slug)->first()){
             return $room;
         }else{
             return response()->json(['message' => 'Room not found.'], 404);
