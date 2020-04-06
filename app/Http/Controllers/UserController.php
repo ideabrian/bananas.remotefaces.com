@@ -59,7 +59,7 @@ class UserController extends Controller
 
         if($user = User::where('email', $request->email)->first()){
             //now make sure the user is in the room
-            if($room = RoomUser::where('user_id', $user->id)->where('id', $request->room_id)->first()){
+            if($room = RoomUser::where('user_id', $user->id)->where('room_id', $request->room_id)->first()){
                 Helper::sendLoginLink($user->id, $request->room_id);
                 return response()->json(['success' => true], 200);
             }
