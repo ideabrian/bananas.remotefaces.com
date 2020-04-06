@@ -39,5 +39,6 @@ $router->group(['middleware' => 'auth'], function () use ($router) {
     $router->get('/me/room', 'UserController@profileFromRoom');
     $router->post('/logout', 'UserController@logout');
     $router->post('/updateImage', 'UserController@updateImageUrl');    
+    $router->post('/updateStatus', 'UserController@updateStatus');    
     $router->post('/rooms/{id}/update', 'RoomController@update');
 });

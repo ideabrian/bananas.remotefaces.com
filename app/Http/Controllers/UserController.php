@@ -145,6 +145,24 @@ class UserController extends Controller
 
     }
 
+    public function updateStatus(Request $request){        
+
+        try{
+            $this->validate($request, [
+                'status' => 'required'
+            ]);
+        }catch( \Illuminate\Validation\ValidationException $e ){
+            return $e->getResponse();
+        }
+
+        $user = Auth::user();
+        $user->status = $request->status;
+        $user->save();
+        
+        return response()->json(['success' => true], 200);    
+
+    }
+
     public function updateImageUrl(Request $request){        
 
         try{
