@@ -10,7 +10,7 @@ use  App\File;
 use  App\Session;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
-
+use Illuminate\Validation\Rule;
 use Aws\S3\S3Client;
 use League\Flysystem\AwsS3v3\AwsS3Adapter;
 use League\Flysystem\Filesystem;
@@ -158,7 +158,7 @@ class UserController extends Controller
         $user = Auth::user();
         $user->status = $request->status;
         $user->save();
-        
+
         return response()->json(['success' => true], 200);    
 
     }
