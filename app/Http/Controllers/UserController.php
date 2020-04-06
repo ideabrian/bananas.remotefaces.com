@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use  App\Room;
+use  App\RoomUser;
 use  App\User;
 use  App\File;
 use  App\Session;
@@ -59,7 +59,7 @@ class UserController extends Controller
 
         if($user = User::where('email', $request->email)->first()){
             //now make sure the user is in the room
-            if($room = Room::where('user_id', $user->id)->where('id', $request->room_id)->first()){
+            if($room = RoomUser::where('user_id', $user->id)->where('id', $request->room_id)->first()){
                 Helper::sendLoginLink($user->id, $request->room_id);
                 return response()->json(['success' => true], 200);
             }
