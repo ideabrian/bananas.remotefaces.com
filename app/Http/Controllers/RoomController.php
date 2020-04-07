@@ -112,7 +112,7 @@ class RoomController extends Controller
                     'alpha_dash',
                     'max:15',
                     'unique:rooms',
-                    Rule::notIn(['api','forum','help','community','discuss']),
+                    Rule::notIn(['api','forum','help','community','discuss','bananas']),
                 ],
                 'user_id' => 'required|exists:users,id'
             ]);

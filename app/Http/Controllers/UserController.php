@@ -37,7 +37,13 @@ class UserController extends Controller
 
         $users = User::whereHas('rooms', function (Builder $query) use($room_id) {
             $query->where('room_id', $room_id);
-        })->with('file')->whereNotNull('file_id')->orderBy('updated_at','desc')->get();
+        })->with('file')->whereNotNull('file_id');
+        
+        if(Auth::user()){
+            $users = $users->orderByRaw('users.id = '.Auth::user()->id.' desc');
+        }
+
+        $users = $users->orderBy('updated_at','desc')->get();
         return $users;
     }
     
